@@ -4,13 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5dfc1b61-3ee2-424d-a92b-728728f6b736" name="Changes" comment="通信模块-&gt;ok,demo用的固定端口通信,没去自动分配端口">
+    <list default="true" id="5dfc1b61-3ee2-424d-a92b-728728f6b736" name="Changes" comment="持续监听完成">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_CloudServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_CloudServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_DataConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_DataConsumer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_DataOwner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_DataOwner.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_EdgeNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_EdgeNode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_TA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_TA.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_CloudServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_CloudServer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_DataConsumer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_DataConsumer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_DataOwner.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_DataOwner.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_EdgeNode.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_EdgeNode.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_TA.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_TA.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -181,7 +186,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684463808531</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="持续监听完成">
+      <created>1684470482133</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1684470482133</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -200,10 +212,16 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="通信模块-&gt;ok,demo用的固定端口通信,没去自动分配端口" />
-    <option name="LAST_COMMIT_MESSAGE" value="通信模块-&gt;ok,demo用的固定端口通信,没去自动分配端口" />
+    <MESSAGE value="持续监听完成" />
+    <option name="LAST_COMMIT_MESSAGE" value="持续监听完成" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
     <select />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Abe_Se$Simulator_DataOwner.ic" NAME="Simulator_DataOwner Coverage Results" MODIFIED="1684491073677" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.duwei.*</FILTER>
+    </SUITE>
   </component>
 </project>

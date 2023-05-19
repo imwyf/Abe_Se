@@ -1,19 +1,20 @@
 package com.duwei;
 
-import com.duwei.entity.CloudServer;
 import com.duwei.entity.EdgeNode;
 import com.duwei.key.ConversionKey;
 import com.duwei.key.transportable.TransportableConversionKey;
+import com.duwei.key.transportable.TransportableUserPrivateKey;
 import com.duwei.param.TransportablePublicParams;
 import com.duwei.text.FinalCiphertext;
-import com.duwei.text.SearchTrapdoor;
 import com.duwei.text.transportable.TransportableFinalCiphertext;
-import com.duwei.text.transportable.TransportableIndexCiphertext;
 import com.duwei.text.transportable.TransportableIntermediateDecCiphertext;
-import com.duwei.text.transportable.TransportableSearchTrapdoor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @description: 在一台机器上模拟5个实体通信来实现主流程，本进程模拟EdgeNode
@@ -21,21 +22,66 @@ import java.util.List;
  * @time: 2023/5/17 10:53
  */
 public class Simulator_EdgeNode {
-    public static void main(String[] args) {
-        System.out.println("-----------> 我是EdgeNode");
-        EdgeNode edgeNode = new EdgeNode();
+    public static final int TA_LISTEN_PORT = 8080;
+    public static final String TA_ADDRESS = "localhost";
+    public static final int EdgeNode_LISTEN_PORT = 8070;
+    private final ServerSocket serverSocket;
+    private final Socket TA_socket;
+    private final EdgeNode edgeNode;
 
-        // 向TA注册
-        edgeNode.tcp.sendObj(7070,"localhost",1);
-        // 接收公共参数
-        TransportablePublicParams transportablePublicParams= (TransportablePublicParams) edgeNode.tcp.receiveObj(8080);
+    public Simulator_EdgeNode(int listenPort) throws IOException {
+        TA_socket = new Socket(TA_ADDRESS, TA_LISTEN_PORT);
+        serverSocket = new ServerSocket(listenPort); // 监听来自数据拥有者的连接
+        edgeNode = new EdgeNode();
+    }
 
+    public static void main(String[] args) throws IOException {
+        Simulator_EdgeNode edgeNode = new Simulator_EdgeNode(EdgeNode_LISTEN_PORT);
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        edgeNode.TA_handler();
+        while (true) {
+            // TA监听端口，等待注册
+            Socket socket = edgeNode.serverSocket.accept();
+            System.out.println("接收到一个连接,连接地址: " + socket.getRemoteSocketAddress());
+            executorService.execute(() -> {
+                try {
+                    edgeNode.handler(socket);
+                } catch (IOException | ClassNotFoundException e) {
+                    System.out.println("客户端" + socket.getRemoteSocketAddress() + "关闭连接...");
+                }
+            });
+        }
+    }
+
+    //1.发送1获取公共参数
+    private void TA_handler() {
+        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(TA_socket.getOutputStream());
+             ObjectInputStream objectInputStream = new ObjectInputStream(TA_socket.getInputStream())
+        ) {
+
+            objectOutputStream.writeInt(1);
+            objectOutputStream.flush();
+            TransportablePublicParams transportablePublicParams = (TransportablePublicParams) objectInputStream.readObject();
+            System.out.println("接收到公共参数：" + transportablePublicParams);
+            edgeNode.buildPublicParams(transportablePublicParams);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void handler(Socket socket) throws IOException, ClassNotFoundException {
+        InputStream inputStream = socket.getInputStream();
+        OutputStream outputStream = socket.getOutputStream();
+        ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
         //9.边缘节点判断是否满足属性
-        edgeNode.buildPublicParams(transportablePublicParams);
-        while(true) {
-            //首先重构密文和转化密钥
-            TransportableConversionKey transportableConversionKey = (TransportableConversionKey) edgeNode.tcp.receiveObj(8088);
-            TransportableFinalCiphertext transportableFinalCiphertext1 = (TransportableFinalCiphertext) edgeNode.tcp.receiveObj(8098);
+        while (true) {
+            TransportableConversionKey transportableConversionKey = (TransportableConversionKey) objectInputStream.readObject();
+            TransportableFinalCiphertext transportableFinalCiphertext1 = (TransportableFinalCiphertext) objectInputStream.readObject();
+            System.out.println("接收到转化密钥：" + transportableConversionKey);
+            System.out.println("接收到密文：" + transportableFinalCiphertext1);
+
+        //首先重构密文和转化密钥
             ConversionKey conversionKey = ConversionKey.rebuild(transportableConversionKey, edgeNode.getPublicParams());
             FinalCiphertext finalCiphertext = FinalCiphertext.rebuild(transportableFinalCiphertext1, edgeNode.getPublicParams());
             boolean isSatisfyAccessPolicy = edgeNode.isSatisfyAccessPolicy(finalCiphertext, conversionKey);
@@ -43,11 +89,11 @@ public class Simulator_EdgeNode {
                 System.out.println("属性匹配失败");
                 return;
             }
-            System.out.println("----------->9.边缘节点判断是否满足属性ok");
             //10.边缘节点进行部分解密，生成部分解密密文传输到数据使用者
             TransportableIntermediateDecCiphertext transportableIntermediateDecCiphertext = edgeNode.partialDec(finalCiphertext, conversionKey);
-            edgeNode.tcp.sendObj(9090,"localhost",transportableIntermediateDecCiphertext);
-            System.out.println("---------->10.边缘节点进行部分解密，生成部分解密密文传输到数据使用者ok");
+            objectOutputStream.writeObject(transportableIntermediateDecCiphertext);
+            objectOutputStream.flush();
         }
     }
 }
+
