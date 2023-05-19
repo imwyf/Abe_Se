@@ -35,9 +35,15 @@ public class Simulator_DataConsumer {
         userAttributes.add("F");
         userAttributes.add("H");
 
-        // 接收公共参数和密钥
+        // 向TA注册
+        dataConsumer.getTcp().sendObj(7070,"localhost",1);
+        // 接收公共参数
         TransportablePublicParams transportablePublicParams= (TransportablePublicParams) dataConsumer.getTcp().receiveObj(8080);
-        TransportableUserPrivateKey transportableUserPrivateKey= (TransportableUserPrivateKey) dataConsumer.getTcp().receiveObj(8084);
+        // 向TA发送属性集合
+        dataConsumer.getTcp().sendObj(7070,"localhost",2);
+        dataConsumer.getTcp().sendObj(8081,"localhost",userAttributes);
+        // 接收密钥
+        TransportableUserPrivateKey transportableUserPrivateKey= (TransportableUserPrivateKey) dataConsumer.getTcp().receiveObj(8082);
         //根据传输过来的公共参数和密钥构建对象
         dataConsumer.buildPublicParams(transportablePublicParams);
         dataConsumer.buildUserPrivateKey(transportableUserPrivateKey);
@@ -50,7 +56,7 @@ public class Simulator_DataConsumer {
         //生成可传输的搜索陷门传输到云服务器
         TransportableSearchTrapdoor transportableSearchTrapdoor = dataConsumer.generateTransportableSearchTrapdoor(keyWordSearch);
         dataConsumer.getTcp().sendObj(8086,"localhost",transportableSearchTrapdoor);
-        System.out.println("------>6.数据使用者查询关键字对应的密文ok");
+        System.out.println("------>6.数据使用者查询密文开始");
 
         //8.搜索到之后，数据使用者生成可传输的转化密钥传送到边缘节点
         //同时将服务器发回来的密文也传输到边缘节点
@@ -60,7 +66,7 @@ public class Simulator_DataConsumer {
         dataConsumer.getTcp().sendObj(8098,"localhost",transportableFinalCiphertext1);
         System.out.println("------->8.搜索到之后，数据使用者生成可传输的转化密钥传送到边缘节点ok");
         //11.数据使用者进行本地解密
-        TransportableIntermediateDecCiphertext transportableIntermediateDecCiphertext = (TransportableIntermediateDecCiphertext) dataConsumer.getTcp().receiveObj(8088);
+        TransportableIntermediateDecCiphertext transportableIntermediateDecCiphertext = (TransportableIntermediateDecCiphertext) dataConsumer.getTcp().receiveObj(9090);
         String decrypt = dataConsumer.decrypt(transportableIntermediateDecCiphertext);
         System.out.println("解密消息：" + decrypt);
     }

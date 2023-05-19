@@ -18,13 +18,12 @@ public class Simulator_TA {
     public static void main(String[] args) {
         System.out.println("-----------> 我是TA");
         // tcp传输
-        // 2.TA将公共参数传输到其他实体
-        // TA -> DataConsumer : 8080
-        // TA -> DataOwner : 8081
-        // TA -> CloudServer : 8082
-        // TA -> EdgeNode : 8083
+        // 2.TA收到注册请求，TA将公共参数传输到其他实体
+        // 其他实体 -> TA : 7070
+        // TA -> 其他实体 : 8080
         // 3.TA传用户密钥给dataConsumer
-        // TA -> DataConsumer : 8084
+        // 收属性集合：8081
+        // TA -> DataConsumer : 8082
         // 4.dataOwner将密文索引和密文发送到CloudServer
         // dataOwner -> CloudServer : 索引8085,密文8095
         // 5.
@@ -55,26 +54,29 @@ public class Simulator_TA {
         ta.setUp(attributes);
         System.out.println("------->1.TA进行初始化ok");
 
-        //2.TA将公共参数传输到其他实体，由于公共参数的类不能直接传输，所以需要转换
-        //可传输的公共参数，调用TA的getTransportablePublicParams()获取可传输的公共参数
-        TransportablePublicParams transportablePublicParams = ta.getTransportablePublicParams();
-        ta.getTcp().sendObj(8080,"localhost",transportablePublicParams);
-        ta.getTcp().sendObj(8081,"localhost",transportablePublicParams);
-        ta.getTcp().sendObj(8082,"localhost",transportablePublicParams);
-        ta.getTcp().sendObj(8083,"localhost",transportablePublicParams);
-        System.out.println("------->2.TA将公共参数传输到其他实体ok");
-
-        //3.ta为数据使用者生成属性私钥,需要用户属性集合
-        Set<String> userAttributes = new HashSet<>();
-        userAttributes.add("D");
-        userAttributes.add("B");
-        userAttributes.add("A");
-        userAttributes.add("C");
-        userAttributes.add("F");
-        userAttributes.add("H");
-        //调用TA的keyGenTransportable()生成可以传输的用户密钥，然后将其传输到用户
-        TransportableUserPrivateKey transportableUserPrivateKey = ta.keyGenTransportable(userAttributes);
-        ta.getTcp().sendObj(8084,"localhost",transportableUserPrivateKey);
-        System.out.println("-------->3.生成可以传输的用户密钥，然后将其传输到用户ok");
+        // TA监听端口，等待注册
+        while(true){
+            int signCode = (int) ta.getTcp().receiveObj(7070);
+            if (signCode == 1) {
+                // 2.收到注册请求,传给请求方公共参数
+                System.out.println("------>TA:收到注册请求");
+                TransportablePublicParams transportablePublicParams = ta.getTransportablePublicParams();
+                ta.getTcp().sendObj(8080,"localhost",transportablePublicParams);
+                System.out.println("------>TA:传给请求方公共参数");
+            }
+            else if(signCode == 2) {
+                System.out.println("------>TA:收到属性集合请求");
+                // 3.收到发送的用户属性集合，TA生成用户密钥将其传输到用户
+                Set<String> userAttributes = (Set<String>) ta.getTcp().receiveObj(8081);
+                System.out.println("------>TA:收到用户属性集合");
+                //调用TA的keyGenTransportable()生成可以传输的用户密钥，然后将其传输到用户
+                TransportableUserPrivateKey transportableUserPrivateKey = ta.keyGenTransportable(userAttributes);
+                ta.getTcp().sendObj(8082,"localhost",transportableUserPrivateKey);
+                System.out.println("------>TA:生成用户密钥将其传输到用户");
+            }
+            else {
+                System.out.println("------>注册码错误");
+            }
+        }
     }
 }

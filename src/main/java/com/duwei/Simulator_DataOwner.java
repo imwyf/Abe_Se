@@ -20,8 +20,10 @@ public class Simulator_DataOwner {
 
         //4. 数据拥有者本地构建访问策略，加密数据
         DataOwner dataOwner = new DataOwner();
+        // 向TA注册
+        dataOwner.getTcp().sendObj(7070,"localhost",1);
         // 接收公共参数
-        TransportablePublicParams transportablePublicParams = (TransportablePublicParams) dataOwner.getTcp().receiveObj(8081);
+        TransportablePublicParams transportablePublicParams = (TransportablePublicParams) dataOwner.getTcp().receiveObj(8080);
         //首先构建公共参数
         dataOwner.buildPublicParams(transportablePublicParams);
         //消息以及关键字关键字
@@ -48,7 +50,7 @@ public class Simulator_DataOwner {
         //将可传输的密文索引和可传输的密文发送到云存储服务器
         dataOwner.getTcp().sendObj(8085,"localhost",transportableIndexCiphertext);
         dataOwner.getTcp().sendObj(8095,"localhost",transportableFinalCiphertext);
-        System.out.println("------>4. 数据拥有者本地构建访问策略，加密数据ok");
+        System.out.println("------>4. 将可传输的密文索引和可传输的密文发送到云存储服务器ok");
 
     }
 }
