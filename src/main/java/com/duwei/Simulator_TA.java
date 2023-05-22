@@ -8,6 +8,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashSet;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -18,27 +19,32 @@ import java.util.concurrent.Executors;
  * @time: 2023/5/17 10:53
  */
 public class Simulator_TA {
-    public static final int TA_LISTEN_PORT = 8080;
+    public static final String TA_ATTRIBUTES_PATH = "src/main/resources/TA_attributes.txt";
+    public static int TA_LISTEN_PORT = 8080;
     private final ServerSocket serverSocket;
     private final TA ta;
 
     public Simulator_TA(int listenPort) throws IOException {
         serverSocket = new ServerSocket(listenPort);
         ta = new TA();
+        // 读取全局属性集合
         Set<String> attributes = new HashSet<>();
-        attributes.add("A");
-        attributes.add("B");
-        attributes.add("C");
-        attributes.add("D");
-        attributes.add("E");
-        attributes.add("F");
-        attributes.add("G");
-        attributes.add("H");
+        BufferedReader in = new BufferedReader(new FileReader(TA_ATTRIBUTES_PATH));
+        String attr = in.readLine();
+        for (String s: attr.split(" ")) {
+            attributes.add(s);
+        }
+        in.close();
         ta.setUp(attributes);
         System.out.println("------->1.TA进行初始化ok");
     }
 
     public static void main(String[] args) throws IOException {
+        // 与控制台交互
+        Scanner scanner = new Scanner( System.in );
+        System.out.println("请输入TA监听的端口:");
+        TA_LISTEN_PORT = scanner.nextInt();//数据类型为int
+
         //1.Ta根据全局属性集合，设置公共参数
         Simulator_TA ta = new Simulator_TA(TA_LISTEN_PORT); //8080
         ExecutorService executorService = Executors.newCachedThreadPool();

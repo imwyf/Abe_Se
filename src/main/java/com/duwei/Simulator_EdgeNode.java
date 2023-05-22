@@ -12,6 +12,7 @@ import com.duwei.text.transportable.TransportableIntermediateDecCiphertext;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -22,8 +23,8 @@ import java.util.concurrent.Executors;
  * @time: 2023/5/17 10:53
  */
 public class Simulator_EdgeNode {
-    public static final int TA_LISTEN_PORT = 8080;
-    public static final String TA_ADDRESS = "localhost";
+    public static int TA_LISTEN_PORT = 8080;
+    public static String TA_ADDRESS = "localhost";
     public static final int EdgeNode_LISTEN_PORT = 8070;
     private final ServerSocket serverSocket;
     private final Socket TA_socket;
@@ -36,6 +37,13 @@ public class Simulator_EdgeNode {
     }
 
     public static void main(String[] args) throws IOException {
+        // 设置要连接的TA的地址
+        Scanner scanner = new Scanner( System.in );
+        System.out.println("请输入需要连接的TA的端口:");
+        TA_LISTEN_PORT = scanner.nextInt();//数据类型为int
+        System.out.println("请输入需要连接的TA的地址:");
+        TA_ADDRESS = scanner.nextLine();//数据类型为String
+
         Simulator_EdgeNode edgeNode = new Simulator_EdgeNode(EdgeNode_LISTEN_PORT);
         ExecutorService executorService = Executors.newCachedThreadPool();
         edgeNode.TA_handler();

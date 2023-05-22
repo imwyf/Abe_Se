@@ -8,11 +8,10 @@ import com.duwei.text.transportable.TransportableFinalCiphertext;
 import com.duwei.text.transportable.TransportableIntermediateDecCiphertext;
 import com.duwei.text.transportable.TransportableSearchTrapdoor;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.HashSet;
+import java.util.Scanner;
 import java.util.Set;
 
 /**
@@ -21,11 +20,12 @@ import java.util.Set;
  * @time: 2023/5/17 10:53
  */
 public class Simulator_DataConsumer {
-    public static final String TA_ADDRESS = "localhost";
+    public static final String DataConsumer_ATTRIBUTES_PATH = "src/main/resources/DataConsumer_attributes.txt";
+    public static String TA_ADDRESS = "localhost";
     public static final String CloudServer_ADDRESS = "localhost";
     public static final String EdgeNode_ADDRESS = "localhost";
 
-    public static final int TA_LISTEN_PORT = 8080;
+    public static int TA_LISTEN_PORT = 8080;
     public static final int CloudServer_LISTEN_PORT_TO_DataConsumer = 8090;
     public static final int EdgeNode_LISTEN_PORT = 8070;
     private final Socket TA_socket;
@@ -45,16 +45,23 @@ public class Simulator_DataConsumer {
 
         dataConsumer = new DataConsumer();
         Set<String> userAttributes = new HashSet<>();
-        userAttributes.add("D");
-        userAttributes.add("B");
-        userAttributes.add("A");
-        userAttributes.add("C");
-        userAttributes.add("F");
-        userAttributes.add("H");
+        BufferedReader in = new BufferedReader(new FileReader(DataConsumer_ATTRIBUTES_PATH));
+        String attr = in.readLine();
+        for (String s: attr.split(" ")) {
+            userAttributes.add(s);
+        }
+        in.close();
         userAttributeSet = userAttributes;
     }
 
     public static void main(String[] args) throws IOException {
+        // 设置要连接的TA的地址
+        Scanner scanner = new Scanner( System.in );
+        System.out.println("请输入需要连接的TA的端口:");
+        TA_LISTEN_PORT = scanner.nextInt();//数据类型为int
+        System.out.println("请输入需要连接的TA的地址:");
+        TA_ADDRESS = scanner.nextLine();//数据类型为String
+
         Simulator_DataConsumer dataConsumer = new Simulator_DataConsumer();
         dataConsumer.TA_handler();
         dataConsumer.CloudServer_handler();

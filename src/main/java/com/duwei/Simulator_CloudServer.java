@@ -14,6 +14,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -25,8 +26,8 @@ import java.util.concurrent.Executors;
 public class Simulator_CloudServer extends Thread{
     public static final int CloudServer_LISTEN_PORT_TO_DataConsumer = 8090;
     public static final int CloudServer_LISTEN_PORT_TO_DataOwner = 8060;
-    public static final String TA_ADDRESS = "localhost";
-    public static final int TA_LISTEN_PORT = 8080;
+    public static String TA_ADDRESS = "localhost";
+    public static int TA_LISTEN_PORT = 8080;
     private final ServerSocket serverSocket;
     private final static CloudServer cloudServer = new CloudServer();
     private final Socket TA_socket;
@@ -37,6 +38,13 @@ public class Simulator_CloudServer extends Thread{
     }
 
     public static <listSerializable> void main(String[] args) throws IOException {
+        // 设置要连接的TA的地址
+        Scanner scanner = new Scanner( System.in );
+        System.out.println("请输入需要连接的TA的端口:");
+        TA_LISTEN_PORT = scanner.nextInt();//数据类型为int
+        System.out.println("请输入需要连接的TA的地址:");
+        TA_ADDRESS = scanner.nextLine();//数据类型为String
+
         // 向TA注册
         Simulator_CloudServer cloudServer1 = new Simulator_CloudServer(CloudServer_LISTEN_PORT_TO_DataOwner);
         Simulator_CloudServer cloudServer2 = new Simulator_CloudServer(CloudServer_LISTEN_PORT_TO_DataConsumer);
