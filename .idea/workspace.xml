@@ -4,13 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5dfc1b61-3ee2-424d-a92b-728728f6b736" name="Changes" comment="一个socket对应一个信道">
+    <list default="true" id="5dfc1b61-3ee2-424d-a92b-728728f6b736" name="Changes" comment="控制台交互和文件读取 -&gt; ok">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_CloudServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_CloudServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_DataConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_DataConsumer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_DataOwner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_DataOwner.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_EdgeNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_EdgeNode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_TA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_TA.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_CloudServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_CloudServer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_DataConsumer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_DataConsumer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_DataOwner.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_DataOwner.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_EdgeNode.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_EdgeNode.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_TA.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_TA.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -196,7 +201,21 @@
       <option name="project" value="LOCAL" />
       <updated>1684493405832</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="控制台交互和文件读取 -&gt; ok">
+      <created>1684725048129</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1684725048130</updated>
+    </task>
+    <task id="LOCAL-00005" summary="控制台交互和文件读取 -&gt; ok">
+      <created>1684725089352</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1684725089352</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -217,7 +236,19 @@
     <MESSAGE value="通信模块-&gt;ok,demo用的固定端口通信,没去自动分配端口" />
     <MESSAGE value="持续监听完成" />
     <MESSAGE value="一个socket对应一个信道" />
-    <option name="LAST_COMMIT_MESSAGE" value="一个socket对应一个信道" />
+    <MESSAGE value="控制台交互和文件读取 -&gt; ok" />
+    <option name="LAST_COMMIT_MESSAGE" value="控制台交互和文件读取 -&gt; ok" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/duwei/Simulator_CloudServer.java</url>
+          <line>46</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

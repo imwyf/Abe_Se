@@ -60,9 +60,10 @@ public class Simulator_DataOwner {
     public static void main(String[] args) throws IOException {
         // 设置要连接的TA的地址
         Scanner scanner = new Scanner( System.in );
-        System.out.println("请输入需要连接的TA的端口:");
+        System.out.print("请输入需要连接的TA的端口:");
         TA_LISTEN_PORT = scanner.nextInt();//数据类型为int
-        System.out.println("请输入需要连接的TA的地址:");
+        scanner.nextLine();
+        System.out.print("请输入需要连接的TA的地址:");
         TA_ADDRESS = scanner.nextLine();//数据类型为String
 
         Simulator_DataOwner dataOwner = new Simulator_DataOwner();

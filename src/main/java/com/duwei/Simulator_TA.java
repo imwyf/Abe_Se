@@ -42,7 +42,7 @@ public class Simulator_TA {
     public static void main(String[] args) throws IOException {
         // 与控制台交互
         Scanner scanner = new Scanner( System.in );
-        System.out.println("请输入TA监听的端口:");
+        System.out.print("请输入TA监听的端口:");
         TA_LISTEN_PORT = scanner.nextInt();//数据类型为int
 
         //1.Ta根据全局属性集合，设置公共参数
