@@ -76,26 +76,6 @@ public class Simulator_CloudServer extends Thread{
                 }
             });
         }
-    private void DataConsumer_handler(Socket dataOwnerSocket) throws IOException, ClassNotFoundException {
-        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(dataOwnerSocket.getOutputStream());
-             ObjectInputStream objectInputStream = new ObjectInputStream(dataOwnerSocket.getInputStream())
-        ){
-                TransportableSearchTrapdoor transportableSearchTrapdoor = (TransportableSearchTrapdoor) objectInputStream.readObject();
-                System.out.println("接收到搜索陷门：" + transportableSearchTrapdoor);
-                SearchTrapdoor searchTrapdoor = SearchTrapdoor.rebuild(transportableSearchTrapdoor, cloudServer.getPublicParams());
-                //7.云服务器遍历自己所存储的索引密文，看是否能够搜索到
-                TransportableFinalCiphertext transportableFinalCiphertext1 = cloudServer.checkSearchTrapdoor(searchTrapdoor);
-                if (transportableFinalCiphertext1 == null) {
-                    System.out.println("没有匹配的关键字");
-                    return;
-                }
-                //搜索成功后云服务器将对应的密文拿出来传输给用户
-                objectOutputStream.writeObject(transportableFinalCiphertext1);
-                objectOutputStream.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     //1.发送1获取公共参数
     private void TA_handler() {
@@ -109,6 +89,26 @@ public class Simulator_CloudServer extends Thread{
             System.out.println("接收到公共参数：" + transportablePublicParams);
             cloudServer.buildPublicParams(transportablePublicParams);
         } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void DataConsumer_handler(Socket dataOwnerSocket) throws IOException, ClassNotFoundException {
+        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(dataOwnerSocket.getOutputStream());
+             ObjectInputStream objectInputStream = new ObjectInputStream(dataOwnerSocket.getInputStream())
+        ){
+            TransportableSearchTrapdoor transportableSearchTrapdoor = (TransportableSearchTrapdoor) objectInputStream.readObject();
+            System.out.println("接收到搜索陷门：" + transportableSearchTrapdoor);
+            SearchTrapdoor searchTrapdoor = SearchTrapdoor.rebuild(transportableSearchTrapdoor, cloudServer.getPublicParams());
+            //7.云服务器遍历自己所存储的索引密文，看是否能够搜索到
+            TransportableFinalCiphertext transportableFinalCiphertext1 = cloudServer.checkSearchTrapdoor(searchTrapdoor);
+            if (transportableFinalCiphertext1 == null) {
+                System.out.println("没有匹配的关键字");
+            }
+            //搜索成功后云服务器将对应的密文拿出来传输给用户
+            objectOutputStream.writeObject(transportableFinalCiphertext1);
+            objectOutputStream.flush();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

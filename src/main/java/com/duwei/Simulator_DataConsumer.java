@@ -65,8 +65,9 @@ public class Simulator_DataConsumer {
 
         Simulator_DataConsumer dataConsumer = new Simulator_DataConsumer();
         dataConsumer.TA_handler();
-        dataConsumer.CloudServer_handler();
-        dataConsumer.EdgeNode_handler();
+        dataConsumer.CloudServer_handler(); // 没搜索到就直接终止程序
+
+        dataConsumer.EdgeNode_handler(); // 属性匹配失败也终止
     }
 
     private void EdgeNode_handler() {
@@ -79,6 +80,10 @@ public class Simulator_DataConsumer {
 
             //11.数据使用者进行本地解密
             TransportableIntermediateDecCiphertext transportableIntermediateDecCiphertext = (TransportableIntermediateDecCiphertext) objectInputStream.readObject();
+            if (transportableIntermediateDecCiphertext == null){
+                System.out.println("属性匹配失败");
+                System.exit(0); // 程序退出
+            }
             String decrypt = dataConsumer.decrypt(transportableIntermediateDecCiphertext);
             System.out.println("解密消息：" + decrypt);
         } catch (IOException | ClassNotFoundException e) {
@@ -103,6 +108,10 @@ public class Simulator_DataConsumer {
             transportableConversionKey = dataConsumer.generateTransportableConversionKey();
             transportableFinalCiphertext1 = (TransportableFinalCiphertext) objectInputStream.readObject();
             System.out.println("接收到服务器发回来的密文：" + transportableFinalCiphertext1);
+            if(transportableFinalCiphertext1 == null){ // 如果没搜索到
+                System.out.println("没有匹配的关键字");
+                System.exit(0); // 程序终止
+            }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }

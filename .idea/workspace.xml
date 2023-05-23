@@ -8,14 +8,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_CloudServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_CloudServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_DataConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_DataConsumer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_DataOwner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_DataOwner.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_EdgeNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_EdgeNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_TA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_TA.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_CloudServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_CloudServer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_DataConsumer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_DataConsumer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_DataOwner.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_DataOwner.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_EdgeNode.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_EdgeNode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_TA.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/duwei/Simulator_TA.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,17 +60,17 @@
     <option name="showLibraryContents" value="true" />
     <option name="showVisibilityIcons" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/11850/OneDrive/java/Abe_Se/Abe_Se/src/main/resources",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "editing.templates"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/11850/OneDrive/java/Abe_Se/Abe_Se/src/main/resources&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editing.templates&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\11850\OneDrive\java\Abe_Se\Abe_Se\src\main\resources" />
@@ -215,7 +208,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684725089352</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="控制台交互和文件读取 -&gt; ok">
+      <created>1684725620608</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1684725620608</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -238,17 +238,6 @@
     <MESSAGE value="一个socket对应一个信道" />
     <MESSAGE value="控制台交互和文件读取 -&gt; ok" />
     <option name="LAST_COMMIT_MESSAGE" value="控制台交互和文件读取 -&gt; ok" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/duwei/Simulator_CloudServer.java</url>
-          <line>46</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

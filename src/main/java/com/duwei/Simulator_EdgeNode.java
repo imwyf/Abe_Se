@@ -93,13 +93,16 @@ public class Simulator_EdgeNode {
         //首先重构密文和转化密钥
             ConversionKey conversionKey = ConversionKey.rebuild(transportableConversionKey, edgeNode.getPublicParams());
             FinalCiphertext finalCiphertext = FinalCiphertext.rebuild(transportableFinalCiphertext1, edgeNode.getPublicParams());
+            TransportableIntermediateDecCiphertext transportableIntermediateDecCiphertext;
             boolean isSatisfyAccessPolicy = edgeNode.isSatisfyAccessPolicy(finalCiphertext, conversionKey);
             if (!isSatisfyAccessPolicy) {
                 System.out.println("属性匹配失败");
-                return;
+                transportableIntermediateDecCiphertext = null;
             }
-            //10.边缘节点进行部分解密，生成部分解密密文传输到数据使用者
-            TransportableIntermediateDecCiphertext transportableIntermediateDecCiphertext = edgeNode.partialDec(finalCiphertext, conversionKey);
+            else { //10.边缘节点进行部分解密，生成部分解密密文传输到数据使用者
+                transportableIntermediateDecCiphertext = edgeNode.partialDec(finalCiphertext, conversionKey);
+            }
+
             objectOutputStream.writeObject(transportableIntermediateDecCiphertext);
             objectOutputStream.flush();
         }
