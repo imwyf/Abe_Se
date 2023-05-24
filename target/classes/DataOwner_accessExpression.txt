@@ -1,1 +1,0 @@
-( A and B and C ) and ( D or E ) and ( G or H )
