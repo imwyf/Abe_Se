@@ -5,6 +5,7 @@ import com.duwei.key.transportable.TransportableUserPrivateKey;
 import com.duwei.param.TransportablePublicParams;
 
 import java.io.*;
+import java.lang.reflect.Field;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashSet;
@@ -19,7 +20,7 @@ import java.util.concurrent.Executors;
  * @time: 2023/5/17 10:53
  */
 public class Simulator_TA {
-    public static final String TA_ATTRIBUTES_PATH = "src/main/resources/TA_attributes.txt";
+    public static final String TA_ATTRIBUTES_PATH = "conf/TA_attributes.txt";
     public static int TA_LISTEN_PORT = 8080;
     private final ServerSocket serverSocket;
     private final TA ta;
@@ -29,14 +30,18 @@ public class Simulator_TA {
         ta = new TA();
         // 读取全局属性集合
         Set<String> attributes = new HashSet<>();
-        BufferedReader in = new BufferedReader(new FileReader(TA_ATTRIBUTES_PATH));
+        BufferedReader in = new BufferedReader(new InputStreamReader(ClassLoader.getSystemClassLoader().getResourceAsStream(TA_ATTRIBUTES_PATH)));
         String attr = in.readLine();
+
         for (String s: attr.split(" ")) {
             attributes.add(s);
         }
         in.close();
         ta.setUp(attributes);
-        System.out.println("------->1.TA进行初始化ok");
+
+        System.out.println("全局属性集合为: [" + attr + "]");
+        System.out.println("TA初始化完成");
+        System.out.println();
     }
 
     public static void main(String[] args) throws IOException {
@@ -74,12 +79,14 @@ public class Simulator_TA {
                 System.out.println("接收到" + socket.getRemoteSocketAddress() + "获取公共参数请求");
                 TransportablePublicParams transportablePublicParams = ta.getTransportablePublicParams();
                 objectOutputStream.writeObject(transportablePublicParams);
+                System.out.println("已向" + socket.getRemoteSocketAddress() + "发送公共参数: " + transportablePublicParams);
             } else if (flag == 2) {
                 //数据访问者提交提交属性
                 System.out.println("接收到" + socket.getRemoteSocketAddress() + "获取生成密钥请求请求");
                 Set attributes = (Set) objectInputStream.readObject();
                 TransportableUserPrivateKey transportableUserPrivateKey = ta.keyGenTransportable(attributes);
                 objectOutputStream.writeObject(transportableUserPrivateKey);
+                System.out.println("已向" + socket.getRemoteSocketAddress() + "发送属性密钥: " + transportableUserPrivateKey);
             }
             objectOutputStream.flush();
         }

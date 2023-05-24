@@ -34,6 +34,9 @@ public class Simulator_EdgeNode {
         TA_socket = new Socket(TA_ADDRESS, TA_LISTEN_PORT);
         serverSocket = new ServerSocket(listenPort); // 监听来自数据拥有者的连接
         edgeNode = new EdgeNode();
+
+        System.out.println("边缘节点初始化完成");
+        System.out.println();
     }
 
     public static void main(String[] args) throws IOException {
@@ -71,7 +74,7 @@ public class Simulator_EdgeNode {
             objectOutputStream.writeInt(1);
             objectOutputStream.flush();
             TransportablePublicParams transportablePublicParams = (TransportablePublicParams) objectInputStream.readObject();
-            System.out.println("接收到公共参数：" + transportablePublicParams);
+            System.out.println("接收到TA传来的公共参数：" + transportablePublicParams);
             edgeNode.buildPublicParams(transportablePublicParams);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -96,11 +99,12 @@ public class Simulator_EdgeNode {
             TransportableIntermediateDecCiphertext transportableIntermediateDecCiphertext;
             boolean isSatisfyAccessPolicy = edgeNode.isSatisfyAccessPolicy(finalCiphertext, conversionKey);
             if (!isSatisfyAccessPolicy) {
-                System.out.println("属性匹配失败");
+                System.out.println("属性匹配失败,部分解密密文被设为null");
                 transportableIntermediateDecCiphertext = null;
             }
             else { //10.边缘节点进行部分解密，生成部分解密密文传输到数据使用者
                 transportableIntermediateDecCiphertext = edgeNode.partialDec(finalCiphertext, conversionKey);
+                System.out.println("属性匹配成功,边缘节点生成部分解密密文并传输到数据使用者: " + transportableIntermediateDecCiphertext);
             }
 
             objectOutputStream.writeObject(transportableIntermediateDecCiphertext);

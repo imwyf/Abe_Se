@@ -20,7 +20,8 @@ import java.util.Set;
  * @time: 2023/5/17 10:53
  */
 public class Simulator_DataConsumer {
-    public static final String DataConsumer_ATTRIBUTES_PATH = "src/main/resources/DataConsumer_attributes.txt";
+    public static final String DataConsumer_ATTRIBUTES_PATH = "conf/DataConsumer_attributes.txt";
+    public static final String DataConsumer_KEYWORDSEARCH_PATH = "conf/DataConsumer_keyWordSearch.txt";
     public static String TA_ADDRESS = "localhost";
     public static final String CloudServer_ADDRESS = "localhost";
     public static final String EdgeNode_ADDRESS = "localhost";
@@ -34,6 +35,7 @@ public class Simulator_DataConsumer {
 
     private final DataConsumer dataConsumer;
     private Set<String> userAttributeSet;
+    Set<String> keyWordSearchSet;
 
     private TransportableConversionKey transportableConversionKey;
     private TransportableFinalCiphertext transportableFinalCiphertext1;
@@ -44,14 +46,30 @@ public class Simulator_DataConsumer {
         EdgeNode_socket = new Socket(EdgeNode_ADDRESS, EdgeNode_LISTEN_PORT);
 
         dataConsumer = new DataConsumer();
+
         Set<String> userAttributes = new HashSet<>();
-        BufferedReader in = new BufferedReader(new FileReader(DataConsumer_ATTRIBUTES_PATH));
+        BufferedReader in = new BufferedReader(new InputStreamReader(ClassLoader.getSystemClassLoader().getResourceAsStream(DataConsumer_ATTRIBUTES_PATH)));
         String attr = in.readLine();
         for (String s: attr.split(" ")) {
             userAttributes.add(s);
         }
         in.close();
+
+        Set<String> keyWordSearch = new HashSet<>();
+        BufferedReader in1 = new BufferedReader(new InputStreamReader(ClassLoader.getSystemClassLoader().getResourceAsStream(DataConsumer_KEYWORDSEARCH_PATH)));
+        String attr1 = in1.readLine();
+        for (String s: attr1.split(" ")) {
+            keyWordSearch.add(s);
+        }
+        in.close();
+
+        keyWordSearchSet = keyWordSearch;
         userAttributeSet = userAttributes;
+        System.out.println("数据使用者的属性集合: " + attr);
+        System.out.println("数据使用者的搜索关键词: " + attr1);
+        System.out.println("数据使用者初始化完成");
+        System.out.println();
+
     }
 
     public static void main(String[] args) throws IOException {
@@ -77,15 +95,19 @@ public class Simulator_DataConsumer {
             // 将转化密钥传送到边缘节点, 同时将服务器发回来的密文也传输到边缘节点
             objectOutputStream.writeObject(transportableConversionKey);
             objectOutputStream.writeObject(transportableFinalCiphertext1);
+            System.out.println("将转化密钥传送到边缘节点: " + transportableConversionKey);
+            System.out.println("同时将服务器发回来的密文也传输到边缘节点: " + transportableFinalCiphertext1);
 
             //11.数据使用者进行本地解密
             TransportableIntermediateDecCiphertext transportableIntermediateDecCiphertext = (TransportableIntermediateDecCiphertext) objectInputStream.readObject();
+            System.out.println("收到部分解密结果: " + transportableIntermediateDecCiphertext);
             if (transportableIntermediateDecCiphertext == null){
                 System.out.println("属性匹配失败");
                 System.exit(0); // 程序退出
             }
+
             String decrypt = dataConsumer.decrypt(transportableIntermediateDecCiphertext);
-            System.out.println("解密消息：" + decrypt);
+            System.out.println("解密消息: " + decrypt);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -96,22 +118,22 @@ public class Simulator_DataConsumer {
              ObjectInputStream objectInputStream = new ObjectInputStream(CloudServer_socket.getInputStream())
         ) {
             //6.数据使用者查询关键字对应的密文
-            Set<String> keyWordSearch = new HashSet<>();
-            keyWordSearch.add("fed");
-            keyWordSearch.add("ieee");
             //生成可传输的搜索陷门传输到云服务器
-            TransportableSearchTrapdoor transportableSearchTrapdoor = dataConsumer.generateTransportableSearchTrapdoor(keyWordSearch);
+            TransportableSearchTrapdoor transportableSearchTrapdoor = dataConsumer.generateTransportableSearchTrapdoor(keyWordSearchSet);
             objectOutputStream.writeObject(transportableSearchTrapdoor);
             objectOutputStream.flush();
 
+            System.out.println("生成搜索陷门传输到云服务器：" + transportableSearchTrapdoor);
             //8.搜索到之后，数据使用者生成可传输的转化密钥
-            transportableConversionKey = dataConsumer.generateTransportableConversionKey();
             transportableFinalCiphertext1 = (TransportableFinalCiphertext) objectInputStream.readObject();
             System.out.println("接收到服务器发回来的密文：" + transportableFinalCiphertext1);
+
             if(transportableFinalCiphertext1 == null){ // 如果没搜索到
                 System.out.println("没有匹配的关键字");
                 System.exit(0); // 程序终止
             }
+            transportableConversionKey = dataConsumer.generateTransportableConversionKey();
+            System.out.println("生成转化密钥：" + transportableConversionKey);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -125,7 +147,7 @@ public class Simulator_DataConsumer {
             objectOutputStream.writeInt(1);
             objectOutputStream.flush();
             TransportablePublicParams transportablePublicParams = (TransportablePublicParams) objectInputStream.readObject();
-            System.out.println("接收到公共参数：" + transportablePublicParams);
+            System.out.println("接收到TA传来的公共参数：" + transportablePublicParams);
             dataConsumer.buildPublicParams(transportablePublicParams);
 
             //2.发送2提交属性获取密钥
@@ -133,7 +155,7 @@ public class Simulator_DataConsumer {
             objectOutputStream.writeObject(userAttributeSet);
             objectOutputStream.flush();
             TransportableUserPrivateKey transportableUserPrivateKey = (TransportableUserPrivateKey) objectInputStream.readObject();
-            System.out.println("接收到属性密钥：" + transportableUserPrivateKey);
+            System.out.println("接收到TA传来的属性密钥：" + transportableUserPrivateKey);
             dataConsumer.buildUserPrivateKey(transportableUserPrivateKey);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();

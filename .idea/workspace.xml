@@ -4,11 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5dfc1b61-3ee2-424d-a92b-728728f6b736" name="Changes" comment="控制台交互和文件读取 -&gt; ok">
+    <list default="true" id="5dfc1b61-3ee2-424d-a92b-728728f6b736" name="Changes" comment="bug fixed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_CloudServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_CloudServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_DataConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_DataConsumer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_DataOwner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_DataOwner.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_EdgeNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_EdgeNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_TA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/duwei/Simulator_TA.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/DataConsumer_attributes.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/conf/DataConsumer_attributes.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/DataOwner_accessExpression.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/conf/DataOwner_accessExpression.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/DataOwner_message_and_keywords.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/conf/DataOwner_message_and_keywords.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/TA_attributes.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/conf/TA_attributes.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,17 +66,18 @@
     <option name="showLibraryContents" value="true" />
     <option name="showVisibilityIcons" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/11850/OneDrive/java/Abe_Se/Abe_Se/src/main/resources&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editing.templates&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/11850/OneDrive/java/Abe_Se/Abe_Se/src/main/resources",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "editing.templates"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\11850\OneDrive\java\Abe_Se\Abe_Se\src\main\resources" />
@@ -79,11 +86,14 @@
       <recent name="E:\实验室开发项目\物联网基于属性基加密\Abe_Se\src\main\java\com\duwei" />
       <recent name="E:\实验室开发项目\物联网基于属性基加密\Abe_Se" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\11850\OneDrive\java\Abe_Se\Abe_Se\src\main\resources\conf" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.duwei" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Simulator_DataConsumer">
+  <component name="RunManager" selected="Application.Simulator_TA">
     <configuration name="Simulator_CloudServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.duwei.Simulator_CloudServer" />
       <module name="Abe_Se" />
@@ -215,7 +225,21 @@
       <option name="project" value="LOCAL" />
       <updated>1684725620608</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="bug fixed">
+      <created>1684809461165</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1684809461165</updated>
+    </task>
+    <task id="LOCAL-00008" summary="bug fixed">
+      <created>1684809466437</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1684809466437</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -237,7 +261,8 @@
     <MESSAGE value="持续监听完成" />
     <MESSAGE value="一个socket对应一个信道" />
     <MESSAGE value="控制台交互和文件读取 -&gt; ok" />
-    <option name="LAST_COMMIT_MESSAGE" value="控制台交互和文件读取 -&gt; ok" />
+    <MESSAGE value="bug fixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="bug fixed" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

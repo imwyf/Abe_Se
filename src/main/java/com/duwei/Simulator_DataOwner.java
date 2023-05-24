@@ -21,8 +21,8 @@ import java.util.*;
  * @time: 2023/5/17 10:53
  */
 public class Simulator_DataOwner {
-    public static final String DataOwner_ACCESSEXPRESSIONE_PATH = "src/main/resources/DataOwner_accessExpression.txt";
-    public static final String DataOwner_MESSAGE_AND_KEYWORDS_PATH = "src/main/resources/DataOwner_message_and_keywords.txt";
+    public static final String DataOwner_ACCESSEXPRESSIONE_PATH = "conf/DataOwner_accessExpression.txt";
+    public static final String DataOwner_MESSAGE_AND_KEYWORDS_PATH = "conf/DataOwner_message_and_keywords.txt";
     private final Socket TA_socket;
     private final Socket CloudServer_socket;
     public static String TA_ADDRESS = "localhost";
@@ -42,12 +42,13 @@ public class Simulator_DataOwner {
 
         //构建策略表达式
         //从文件中读取
-        BufferedReader in1 = new BufferedReader(new FileReader(DataOwner_ACCESSEXPRESSIONE_PATH));
+
+        BufferedReader in1 = new BufferedReader(new InputStreamReader(ClassLoader.getSystemClassLoader().getResourceAsStream(DataOwner_ACCESSEXPRESSIONE_PATH)));
         accessExpression = in1.readLine();
         in1.close();
 
         //读取原始消息和关键词
-        BufferedReader in2 = new BufferedReader(new FileReader(DataOwner_MESSAGE_AND_KEYWORDS_PATH));
+        BufferedReader in2 = new BufferedReader(new InputStreamReader(ClassLoader.getSystemClassLoader().getResourceAsStream(DataOwner_MESSAGE_AND_KEYWORDS_PATH)));
         message = in2.readLine();
         Set<String> keywords = new HashSet<>();
         for (String s: in2.readLine().split(" ")) {
@@ -55,6 +56,12 @@ public class Simulator_DataOwner {
         }
         in2.close();
         keywordsSet = keywords;
+
+        System.out.println("数据拥有者的原始消息: " + message);
+        System.out.println("数据拥有者的消息关键词: " + keywords);
+        System.out.println("数据拥有者的策略表达式: " + accessExpression);
+        System.out.println("数据拥有者初始化完成");
+        System.out.println();
     }
 
     public static void main(String[] args) throws IOException {
@@ -79,7 +86,7 @@ public class Simulator_DataOwner {
             objectOutputStream.writeInt(1);
             objectOutputStream.flush();
             TransportablePublicParams transportablePublicParams = (TransportablePublicParams) objectInputStream.readObject();
-            System.out.println("接收到公共参数：" + transportablePublicParams);
+            System.out.println("接收到TA传来的公共参数：" + transportablePublicParams);
             dataOwner.buildPublicParams(transportablePublicParams);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -90,7 +97,6 @@ public class Simulator_DataOwner {
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(CloudServer_socket.getOutputStream());
              ObjectInputStream objectInputStream = new ObjectInputStream(CloudServer_socket.getInputStream())
         ) {
-            System.out.println("原始消息：" + message);
             //先进行离线计算
             dataOwner.offlineEnc();
             //接下来加密索引，生成可以传输的索引密文
@@ -105,6 +111,9 @@ public class Simulator_DataOwner {
             objectOutputStream.writeObject(transportableIndexCiphertext);
             objectOutputStream.writeObject(transportableFinalCiphertext);
             objectOutputStream.flush();
+
+            System.out.println("生成索引密文并发送给云存储服务器: " + transportableIndexCiphertext);
+            System.out.println("生成密文并发送给云存储服务器: " + transportableFinalCiphertext);
         }catch (IOException e) {
             e.printStackTrace();
         }

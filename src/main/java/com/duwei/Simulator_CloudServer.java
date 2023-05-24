@@ -49,6 +49,9 @@ public class Simulator_CloudServer extends Thread{
         // 向TA注册
         Simulator_CloudServer cloudServer1 = new Simulator_CloudServer(CloudServer_LISTEN_PORT_TO_DataOwner);
         Simulator_CloudServer cloudServer2 = new Simulator_CloudServer(CloudServer_LISTEN_PORT_TO_DataConsumer);
+        System.out.println("云存储服务器初始化完成");
+        System.out.println();
+
         cloudServer1.TA_handler();
         cloudServer2.TA_handler();
         ExecutorService executorService = Executors.newCachedThreadPool();
@@ -86,7 +89,7 @@ public class Simulator_CloudServer extends Thread{
             objectOutputStream.writeInt(1);
             objectOutputStream.flush();
             TransportablePublicParams transportablePublicParams = (TransportablePublicParams) objectInputStream.readObject();
-            System.out.println("接收到公共参数：" + transportablePublicParams);
+            System.out.println("接收到TA传来的公共参数：" + transportablePublicParams);
             cloudServer.buildPublicParams(transportablePublicParams);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -103,11 +106,12 @@ public class Simulator_CloudServer extends Thread{
             //7.云服务器遍历自己所存储的索引密文，看是否能够搜索到
             TransportableFinalCiphertext transportableFinalCiphertext1 = cloudServer.checkSearchTrapdoor(searchTrapdoor);
             if (transportableFinalCiphertext1 == null) {
-                System.out.println("没有匹配的关键字");
+                System.out.println("没有匹配的关键字,对应密文被设为null");
             }
             //搜索成功后云服务器将对应的密文拿出来传输给用户
             objectOutputStream.writeObject(transportableFinalCiphertext1);
             objectOutputStream.flush();
+            System.out.println("匹配成功,云服务器将对应的密文传输给用户: " + transportableFinalCiphertext1);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -119,11 +123,12 @@ public class Simulator_CloudServer extends Thread{
         ){
                 TransportableIndexCiphertext transportableIndexCiphertext = (TransportableIndexCiphertext) objectInputStream.readObject();
                 TransportableFinalCiphertext transportableFinalCiphertext = (TransportableFinalCiphertext) objectInputStream.readObject();
-                System.out.println("接收到密文索引：" + transportableIndexCiphertext);
+                System.out.println("接收到索引密文：" + transportableIndexCiphertext);
                 System.out.println("接收到密文：" + transportableFinalCiphertext);
 
                 //5.存储数据拥有者发来的索引和密文
                 cloudServer.store(transportableIndexCiphertext, transportableFinalCiphertext);
+                System.out.println("已存储数据拥有者发来的索引和密文");
         } catch (IOException e) {
             e.printStackTrace();
         }
