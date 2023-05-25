@@ -24,10 +24,10 @@ import java.util.concurrent.Executors;
  * @time: 2023/5/17 10:53
  */
 public class Simulator_CloudServer extends Thread{
-    public static final int CloudServer_LISTEN_PORT_TO_DataConsumer = 8090;
-    public static final int CloudServer_LISTEN_PORT_TO_DataOwner = 8060;
-    public static String TA_ADDRESS = "localhost";
-    public static int TA_LISTEN_PORT = 8080;
+    public static int CloudServer_LISTEN_PORT_TO_DataConsumer;
+    public static int CloudServer_LISTEN_PORT_TO_DataOwner;
+    public static String TA_ADDRESS;
+    public static int TA_LISTEN_PORT;
     private final ServerSocket serverSocket;
     private final static CloudServer cloudServer = new CloudServer();
     private final Socket TA_socket;
@@ -45,6 +45,12 @@ public class Simulator_CloudServer extends Thread{
         scanner.nextLine();
         System.out.print("请输入需要连接的TA的地址:");
         TA_ADDRESS = scanner.nextLine();//数据类型为String
+        System.out.print("请输入云服务器对数据拥有者监听的端口:");
+        CloudServer_LISTEN_PORT_TO_DataOwner = scanner.nextInt();//数据类型为int
+        scanner.nextLine();
+        System.out.print("请输入云服务器对数据使用者监听的端口:");
+        CloudServer_LISTEN_PORT_TO_DataConsumer = scanner.nextInt();//数据类型为int
+        scanner.nextLine();
 
         // 向TA注册
         Simulator_CloudServer cloudServer1 = new Simulator_CloudServer(CloudServer_LISTEN_PORT_TO_DataOwner);

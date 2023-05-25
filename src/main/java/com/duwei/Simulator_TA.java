@@ -21,7 +21,7 @@ import java.util.concurrent.Executors;
  */
 public class Simulator_TA {
     public static final String TA_ATTRIBUTES_PATH = "conf/TA_attributes.txt";
-    public static int TA_LISTEN_PORT = 8080;
+    public static int TA_LISTEN_PORT;
     private final ServerSocket serverSocket;
     private final TA ta;
 
@@ -61,7 +61,7 @@ public class Simulator_TA {
                 try {
                     ta.handler(socket);
                 } catch (IOException | ClassNotFoundException e) {
-                    System.out.println("客户端" + socket.getRemoteSocketAddress() + "关闭连接...");
+                    System.out.println("客户端" + socket.getRemoteSocketAddress() + "关闭连接...\n");
                 }
             });
         }

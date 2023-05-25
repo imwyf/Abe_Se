@@ -25,10 +25,10 @@ public class Simulator_DataOwner {
     public static final String DataOwner_MESSAGE_AND_KEYWORDS_PATH = "conf/DataOwner_message_and_keywords.txt";
     private final Socket TA_socket;
     private final Socket CloudServer_socket;
-    public static String TA_ADDRESS = "localhost";
-    public static int TA_LISTEN_PORT = 8080;
-    public static final String CloudServer_ADDRESS = "localhost";
-    public static final int CloudServer_LISTEN_PORT_TO_DataOwner = 8060;
+    public static String TA_ADDRESS;
+    public static int TA_LISTEN_PORT;
+    public static String CloudServer_ADDRESS;
+    public static int CloudServer_LISTEN_PORT_TO_DataOwner;
     private final DataOwner dataOwner;
     private static String accessExpression;
     private static String message;
@@ -71,7 +71,12 @@ public class Simulator_DataOwner {
         TA_LISTEN_PORT = scanner.nextInt();//数据类型为int
         scanner.nextLine();
         System.out.print("请输入需要连接的TA的地址:");
-        TA_ADDRESS = scanner.nextLine();//数据类型为String
+        TA_ADDRESS = scanner.nextLine();//
+        System.out.print("请输入需要连接的云服务器的端口:");
+        CloudServer_LISTEN_PORT_TO_DataOwner = scanner.nextInt();//数据类型为int
+        scanner.nextLine();
+        System.out.print("请输入需要连接的云服务器的地址:");
+        CloudServer_ADDRESS = scanner.nextLine();//数据类型为int
 
         Simulator_DataOwner dataOwner = new Simulator_DataOwner();
         dataOwner.TA_handler();

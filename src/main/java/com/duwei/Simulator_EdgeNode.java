@@ -23,9 +23,9 @@ import java.util.concurrent.Executors;
  * @time: 2023/5/17 10:53
  */
 public class Simulator_EdgeNode {
-    public static int TA_LISTEN_PORT = 8080;
-    public static String TA_ADDRESS = "localhost";
-    public static final int EdgeNode_LISTEN_PORT = 8070;
+    public static int TA_LISTEN_PORT;
+    public static String TA_ADDRESS;
+    public static int EdgeNode_LISTEN_PORT;
     private final ServerSocket serverSocket;
     private final Socket TA_socket;
     private final EdgeNode edgeNode;
@@ -47,6 +47,11 @@ public class Simulator_EdgeNode {
         scanner.nextLine();
         System.out.print("请输入需要连接的TA的地址:");
         TA_ADDRESS = scanner.nextLine();//数据类型为String
+
+        System.out.print("请输入边缘节点监听的端口:");
+        EdgeNode_LISTEN_PORT = scanner.nextInt();//数据类型为int
+        scanner.nextLine();
+
 
         Simulator_EdgeNode edgeNode = new Simulator_EdgeNode(EdgeNode_LISTEN_PORT);
         ExecutorService executorService = Executors.newCachedThreadPool();

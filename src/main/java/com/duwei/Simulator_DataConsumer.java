@@ -22,13 +22,13 @@ import java.util.Set;
 public class Simulator_DataConsumer {
     public static final String DataConsumer_ATTRIBUTES_PATH = "conf/DataConsumer_attributes.txt";
     public static final String DataConsumer_KEYWORDSEARCH_PATH = "conf/DataConsumer_keyWordSearch.txt";
-    public static String TA_ADDRESS = "localhost";
-    public static final String CloudServer_ADDRESS = "localhost";
-    public static final String EdgeNode_ADDRESS = "localhost";
+    public static String TA_ADDRESS;
+    public static String CloudServer_ADDRESS;
+    public static String EdgeNode_ADDRESS;
 
-    public static int TA_LISTEN_PORT = 8080;
-    public static final int CloudServer_LISTEN_PORT_TO_DataConsumer = 8090;
-    public static final int EdgeNode_LISTEN_PORT = 8070;
+    public static int TA_LISTEN_PORT;
+    public static int CloudServer_LISTEN_PORT_TO_DataConsumer;
+    public static int EdgeNode_LISTEN_PORT;
     private final Socket TA_socket;
     private final Socket CloudServer_socket;
     private final Socket EdgeNode_socket;
@@ -80,6 +80,16 @@ public class Simulator_DataConsumer {
         scanner.nextLine();
         System.out.print("请输入需要连接的TA的地址:");
         TA_ADDRESS = scanner.nextLine();//数据类型为String
+        System.out.print("请输入需要连接的云服务器的端口:");
+        CloudServer_LISTEN_PORT_TO_DataConsumer = scanner.nextInt();//数据类型为int
+        scanner.nextLine();
+        System.out.print("请输入需要连接的云服务器的地址:");
+        CloudServer_ADDRESS = scanner.nextLine();//数据类型为int
+        System.out.print("请输入需要连接的边缘节点的端口:");
+        EdgeNode_LISTEN_PORT = scanner.nextInt();//数据类型为int
+        scanner.nextLine();
+        System.out.print("请输入需要连接的边缘节点的地址:");
+        EdgeNode_ADDRESS = scanner.nextLine();//数据类型为String
 
         Simulator_DataConsumer dataConsumer = new Simulator_DataConsumer();
         dataConsumer.TA_handler();
