@@ -1,11 +1,10 @@
 package com.duwei.util;
 
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 /**
@@ -21,7 +20,7 @@ public class DatabaseUtils {
     /// 属性
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static enum _messageTypes
+    public enum _messageTypes
     {
         TransportablePublicParams, // PublicParams
         TransportableUserPrivateKey, // UserPrivateKey
@@ -30,19 +29,21 @@ public class DatabaseUtils {
         TransportableIndexCiphertext, // IndexCiphertext
         TransportableFinalCiphertext, // Ciphertext
         TransportableIntermediateDecCiphertext // IntermediateDecCiphertext
-    };
+    }
     public _messageTypes _messageType;
     private Connection connection = null;
     private Statement statement = null;
+    private PreparedStatement preparedStatement = null;
     private ResultSet resultSet = null;
-    public final String DATABASE_NAME = "datapacket";
+    public final static String DATABASE_NAME = "datapacket";
+    public final static String TABLE_NAME = "data";
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     /// 方法
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     public DatabaseUtils()
     {
         ConnectToDatabase();
-    };
+    }
 
     // 注册和连接数据库
     public void ConnectToDatabase() {
@@ -77,6 +78,14 @@ public class DatabaseUtils {
                 e.printStackTrace();
             }
         }
+        if (preparedStatement != null) {   //避免空指针异常
+            //7、释放资源
+            try {
+                preparedStatement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
         if (resultSet != null){  //避免空指针异常
             //7、释放资源
             try {
@@ -87,23 +96,23 @@ public class DatabaseUtils {
         }
     }
     // 序列化和反序列化message
-    public byte[] Serialize(Object obj) throws Exception {
-        byte[] ret = null;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream out = new ObjectOutputStream(baos);
-        out.writeObject(obj);
-        out.close();
-        ret = baos.toByteArray();
-        baos.close();
-        return ret;
+    public static String Serialize(Object obj) throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream;
+        objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+        objectOutputStream.writeObject(obj);
+        String string = byteArrayOutputStream.toString("UTF-8");
+        objectOutputStream.close();
+        byteArrayOutputStream.close();
+        return string;
     }
-    public Object DeSerialize(byte[] bytes) throws Exception {
-        Object ret = null;
-        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-        ObjectInputStream in = new ObjectInputStream(bais);
-        ret = in.readObject();
-        in.close();
-        return ret;
+    public static Object DeSerialize(String str) throws IOException, ClassNotFoundException {
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(str.getBytes(StandardCharsets.UTF_8));
+        ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+        Object object = objectInputStream.readObject();
+        objectInputStream.close();
+        byteArrayInputStream.close();
+        return object;
     }
 
     // 根据提供的对象，根据其类型自动生成sender，一条打包好的数据
@@ -113,7 +122,7 @@ public class DatabaseUtils {
         {
             String messageType;
             String sender;
-            byte[] data;
+            String data;
             messageType = obj.getClass().getSimpleName(); // 读取该对象的类型名称
             _messageType = _messageTypes.valueOf(messageType); // 根据名称获得对应的type
             switch (_messageType) // 根据type倒推sender
@@ -159,19 +168,27 @@ public class DatabaseUtils {
             //////////////////////////////////////////////////////////////////////
             /// Debug
             //////////////////////////////////////////////////////////////////////
-            System.out.println("messageType: " + messageType);
-            System.out.println("sender: " + sender);
-            System.out.println("receiver: " + receiver);
-            System.out.println("data: ");
-            System.out.println("序列化后：" + Arrays.toString(data));
-            System.out.println("序列化长度：" + Arrays.toString(data).length());
-            System.out.println("反序列化后：" + DeSerialize(data));
-            System.exit(1);
+//            System.out.println("messageType: " + messageType);
+//            System.out.println("sender: " + sender);
+//            System.out.println("receiver: " + receiver);
+//            System.out.println("data: ");
+//            System.out.println("序列化后：" + data);
+//            System.out.println("序列化长度：" + data.length());
+//            System.out.println("反序列化后：" + DeSerialize(data));
+//            System.exit(1);
 
             // 定义sql语句
-            // -----> 插入格式为 ["messageType", "sender", "receiver", "data"]
+            // -----> 插入格式为 ["messageType", "sender", "receiver", "data", "time"]
             String sql;
-            sql = "insert into data(type,sender,receiver,data) value(" + messageType + ',' + sender + ',' + receiver + ',' + data + "); "; // 增
+            // 获取时间戳
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String time = format.format(System.currentTimeMillis()); //注意这里返回的是string类型
+
+            sql = "insert into " + TABLE_NAME +
+                    "(type,sender,receiver,data,time) values(?,?,?,?,?" +
+//                    "'" + messageType + "'," + "'" + sender + "'," +  "'" + receiver + "'," + "'" + data + "," + "'" + time + "'" +
+                    "); "; // 增
+            System.out.println(sql);
             // update Student set age = 20,score = 100 where id = '10002' // 改
             // delete from Student where id = '10001' // 删
 //            while (rs.next()){  //循环一次，游标移动一行 // 查
@@ -182,9 +199,17 @@ public class DatabaseUtils {
 //                System.out.println("-------------------");
 //            }
 
-            //执行sql并接收返回结果
-            int count = statement.executeUpdate(sql);
+            // 把5个参数全部传到sql语句中
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1,messageType);
+            preparedStatement.setString(2,sender);
+            preparedStatement.setString(3,receiver);
+            preparedStatement.setString(4,data);
+            preparedStatement.setString(5,time);
+            System.out.println(preparedStatement);
+
             //5、执行sql并接收返回结果
+            int count = preparedStatement.executeUpdate();
 //            rs = stat.executeQuery(sql);
 
             //处理结果

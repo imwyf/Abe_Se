@@ -96,6 +96,8 @@ public class Simulator_DataOwner {
             TransportablePublicParams transportablePublicParams = (TransportablePublicParams) objectInputStream.readObject();
             // 插入到数据库
             databaseUtils.InsertSQL(transportablePublicParams,"DataOwner");
+            // 关闭连接
+            databaseUtils.DisconnectToDatabase();
             System.out.println("接收到TA传来的公共参数：" + transportablePublicParams);
             dataOwner.buildPublicParams(transportablePublicParams);
         } catch (IOException | ClassNotFoundException e) {
