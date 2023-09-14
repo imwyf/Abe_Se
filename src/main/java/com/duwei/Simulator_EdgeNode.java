@@ -8,6 +8,7 @@ import com.duwei.param.TransportablePublicParams;
 import com.duwei.text.FinalCiphertext;
 import com.duwei.text.transportable.TransportableFinalCiphertext;
 import com.duwei.text.transportable.TransportableIntermediateDecCiphertext;
+import com.duwei.util.DatabaseUtils;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -29,11 +30,13 @@ public class Simulator_EdgeNode {
     private final ServerSocket serverSocket;
     private final Socket TA_socket;
     private final EdgeNode edgeNode;
+    private static DatabaseUtils databaseUtils;
 
     public Simulator_EdgeNode(int listenPort) throws IOException {
         TA_socket = new Socket(TA_ADDRESS, TA_LISTEN_PORT);
         serverSocket = new ServerSocket(listenPort); // 监听来自数据拥有者的连接
         edgeNode = new EdgeNode();
+        databaseUtils = new DatabaseUtils();
 
         System.out.println("边缘节点初始化完成");
         System.out.println();
@@ -51,7 +54,6 @@ public class Simulator_EdgeNode {
         System.out.print("请输入边缘节点监听的端口:");
         EdgeNode_LISTEN_PORT = scanner.nextInt();//数据类型为int
         scanner.nextLine();
-
 
         Simulator_EdgeNode edgeNode = new Simulator_EdgeNode(EdgeNode_LISTEN_PORT);
         ExecutorService executorService = Executors.newCachedThreadPool();

@@ -3,6 +3,7 @@ package com.duwei;
 import com.duwei.entity.TA;
 import com.duwei.key.transportable.TransportableUserPrivateKey;
 import com.duwei.param.TransportablePublicParams;
+import com.duwei.util.DatabaseUtils;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -24,9 +25,11 @@ public class Simulator_TA {
     public static int TA_LISTEN_PORT;
     private final ServerSocket serverSocket;
     private final TA ta;
-
+    private final DatabaseUtils dbu;
     public Simulator_TA(int listenPort) throws IOException {
         serverSocket = new ServerSocket(listenPort);
+        dbu = new DatabaseUtils();
+        dbu.ConnectToDatabase();
         ta = new TA();
         // 读取全局属性集合
         Set<String> attributes = new HashSet<>();
@@ -79,6 +82,7 @@ public class Simulator_TA {
                 System.out.println("接收到" + socket.getRemoteSocketAddress() + "获取公共参数请求");
                 TransportablePublicParams transportablePublicParams = ta.getTransportablePublicParams();
                 objectOutputStream.writeObject(transportablePublicParams);
+
                 System.out.println("已向" + socket.getRemoteSocketAddress() + "发送公共参数: " + transportablePublicParams);
             } else if (flag == 2) {
                 //数据访问者提交提交属性

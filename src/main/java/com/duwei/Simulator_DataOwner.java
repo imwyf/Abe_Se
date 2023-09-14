@@ -10,6 +10,7 @@ import com.duwei.param.TransportablePublicParams;
 import com.duwei.text.transportable.TransportableFinalCiphertext;
 import com.duwei.text.transportable.TransportableIndexCiphertext;
 import com.duwei.text.transportable.TransportableSearchTrapdoor;
+import com.duwei.util.DatabaseUtils;
 
 import java.io.*;
 import java.net.Socket;
@@ -33,16 +34,17 @@ public class Simulator_DataOwner {
     private static String accessExpression;
     private static String message;
     private static Set<String> keywordsSet;
+    private static DatabaseUtils databaseUtils;
 
     public Simulator_DataOwner() throws IOException {
 
         TA_socket = new Socket(TA_ADDRESS, TA_LISTEN_PORT);
         CloudServer_socket = new Socket(CloudServer_ADDRESS, CloudServer_LISTEN_PORT_TO_DataOwner);
         dataOwner = new DataOwner();
+        databaseUtils = new DatabaseUtils();
 
         //构建策略表达式
         //从文件中读取
-
         BufferedReader in1 = new BufferedReader(new InputStreamReader(ClassLoader.getSystemClassLoader().getResourceAsStream(DataOwner_ACCESSEXPRESSIONE_PATH)));
         accessExpression = in1.readLine();
         in1.close();
@@ -81,6 +83,7 @@ public class Simulator_DataOwner {
         Simulator_DataOwner dataOwner = new Simulator_DataOwner();
         dataOwner.TA_handler();
         dataOwner.CloudServer_handler();
+        databaseUtils.DisconnectToDatabase();
     }
 
     private void TA_handler() {
@@ -91,6 +94,8 @@ public class Simulator_DataOwner {
             objectOutputStream.writeInt(1);
             objectOutputStream.flush();
             TransportablePublicParams transportablePublicParams = (TransportablePublicParams) objectInputStream.readObject();
+            // 插入到数据库
+            databaseUtils.InsertSQL(transportablePublicParams,"DataOwner");
             System.out.println("接收到TA传来的公共参数：" + transportablePublicParams);
             dataOwner.buildPublicParams(transportablePublicParams);
         } catch (IOException | ClassNotFoundException e) {

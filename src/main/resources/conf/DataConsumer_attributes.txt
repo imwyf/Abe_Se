@@ -1,2 +1,1 @@
-D
-B A C F H
+D B A C F H

@@ -8,6 +8,7 @@ import com.duwei.text.SearchTrapdoor;
 import com.duwei.text.transportable.TransportableFinalCiphertext;
 import com.duwei.text.transportable.TransportableIndexCiphertext;
 import com.duwei.text.transportable.TransportableSearchTrapdoor;
+import com.duwei.util.DatabaseUtils;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -31,10 +32,12 @@ public class Simulator_CloudServer extends Thread{
     private final ServerSocket serverSocket;
     private final static CloudServer cloudServer = new CloudServer();
     private final Socket TA_socket;
+    private static DatabaseUtils databaseUtils;
 
     public Simulator_CloudServer(int listenPort) throws IOException {
         serverSocket = new ServerSocket(listenPort); // 监听来自数据拥有者的连接
         TA_socket = new Socket(TA_ADDRESS, TA_LISTEN_PORT); // 与TA连接
+        databaseUtils = new DatabaseUtils();
     }
 
     public static <listSerializable> void main(String[] args) throws IOException {

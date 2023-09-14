@@ -7,6 +7,7 @@ import com.duwei.param.TransportablePublicParams;
 import com.duwei.text.transportable.TransportableFinalCiphertext;
 import com.duwei.text.transportable.TransportableIntermediateDecCiphertext;
 import com.duwei.text.transportable.TransportableSearchTrapdoor;
+import com.duwei.util.DatabaseUtils;
 
 import java.io.*;
 import java.net.Socket;
@@ -39,12 +40,13 @@ public class Simulator_DataConsumer {
 
     private TransportableConversionKey transportableConversionKey;
     private TransportableFinalCiphertext transportableFinalCiphertext1;
+    private static DatabaseUtils databaseUtils;
 
     public Simulator_DataConsumer() throws IOException {
         TA_socket = new Socket(TA_ADDRESS, TA_LISTEN_PORT);
         CloudServer_socket = new Socket(CloudServer_ADDRESS, CloudServer_LISTEN_PORT_TO_DataConsumer);
         EdgeNode_socket = new Socket(EdgeNode_ADDRESS, EdgeNode_LISTEN_PORT);
-
+        databaseUtils = new DatabaseUtils();
         dataConsumer = new DataConsumer();
 
         Set<String> userAttributes = new HashSet<>();
@@ -96,6 +98,7 @@ public class Simulator_DataConsumer {
         dataConsumer.CloudServer_handler(); // 没搜索到就直接终止程序
 
         dataConsumer.EdgeNode_handler(); // 属性匹配失败也终止
+        databaseUtils.DisconnectToDatabase();
     }
 
     private void EdgeNode_handler() {
