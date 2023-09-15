@@ -94,11 +94,11 @@ public class Simulator_DataOwner {
             objectOutputStream.writeInt(1);
             objectOutputStream.flush();
             TransportablePublicParams transportablePublicParams = (TransportablePublicParams) objectInputStream.readObject();
+            System.out.println("接收到TA传来的公共参数：" + transportablePublicParams);
             // 插入到数据库
             databaseUtils.InsertSQL(transportablePublicParams,"DataOwner");
             // 关闭连接
             databaseUtils.DisconnectToDatabase();
-            System.out.println("接收到TA传来的公共参数：" + transportablePublicParams);
             dataOwner.buildPublicParams(transportablePublicParams);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();

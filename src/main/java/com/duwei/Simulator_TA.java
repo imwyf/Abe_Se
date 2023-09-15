@@ -25,11 +25,8 @@ public class Simulator_TA {
     public static int TA_LISTEN_PORT;
     private final ServerSocket serverSocket;
     private final TA ta;
-    private final DatabaseUtils dbu;
     public Simulator_TA(int listenPort) throws IOException {
         serverSocket = new ServerSocket(listenPort);
-        dbu = new DatabaseUtils();
-        dbu.ConnectToDatabase();
         ta = new TA();
         // 读取全局属性集合
         Set<String> attributes = new HashSet<>();

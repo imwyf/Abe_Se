@@ -44,7 +44,6 @@ public class DatabaseUtils {
     {
         ConnectToDatabase();
     }
-
     // 注册和连接数据库
     public void ConnectToDatabase() {
         try
@@ -52,7 +51,7 @@ public class DatabaseUtils {
             //注册驱动
             Class.forName("com.mysql.cj.jdbc.Driver");
             //获取数据库的连接对象
-            connection = DriverManager. getConnection("jdbc:mysql://localhost:3306/"+DATABASE_NAME, "root", "111111"); //  默认：z<Ec%e(dw5fs
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+ DATABASE_NAME + "?serverTimezone=GMT%2B8", "root", "111111"); //  默认：z<Ec%e(dw5fs
             //获取执行sql语句的对象
             statement = connection.createStatement();
         }catch (Exception e)
@@ -96,18 +95,18 @@ public class DatabaseUtils {
         }
     }
     // 序列化和反序列化message
-    public static String Serialize(Object obj) throws IOException {
+    public static byte[] Serialize(Object obj) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ObjectOutputStream objectOutputStream;
         objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
         objectOutputStream.writeObject(obj);
-        String string = byteArrayOutputStream.toString("UTF-8");
+        byte[] ret = byteArrayOutputStream.toByteArray();
         objectOutputStream.close();
         byteArrayOutputStream.close();
-        return string;
+        return ret;
     }
-    public static Object DeSerialize(String str) throws IOException, ClassNotFoundException {
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(str.getBytes(StandardCharsets.UTF_8));
+    public static Object DeSerialize(byte[] bytes) throws IOException, ClassNotFoundException {
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
         ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
         Object object = objectInputStream.readObject();
         objectInputStream.close();
@@ -121,8 +120,8 @@ public class DatabaseUtils {
         try
         {
             String messageType;
-            String sender;
-            String data;
+            String sender = null;
+            byte[] data;
             messageType = obj.getClass().getSimpleName(); // 读取该对象的类型名称
             _messageType = _messageTypes.valueOf(messageType); // 根据名称获得对应的type
             switch (_messageType) // 根据type倒推sender
@@ -159,22 +158,19 @@ public class DatabaseUtils {
                             sender = "DataConsumer";
                             break;
                     }
-                default:
-                    sender = null;
-                    break;
             }
             data = Serialize(obj);  // 把obj序列化
 
             //////////////////////////////////////////////////////////////////////
             /// Debug
             //////////////////////////////////////////////////////////////////////
-//            System.out.println("messageType: " + messageType);
-//            System.out.println("sender: " + sender);
-//            System.out.println("receiver: " + receiver);
-//            System.out.println("data: ");
-//            System.out.println("序列化后：" + data);
-//            System.out.println("序列化长度：" + data.length());
-//            System.out.println("反序列化后：" + DeSerialize(data));
+            System.out.println("messageType: " + messageType);
+            System.out.println("sender: " + sender);
+            System.out.println("receiver: " + receiver);
+            System.out.println("data: ");
+            System.out.println("序列化后：" + Arrays.toString(data));
+            System.out.println("序列化长度：" + data.length);
+            System.out.println("反序列化后：" + DeSerialize(data));
 //            System.exit(1);
 
             // 定义sql语句
@@ -188,7 +184,6 @@ public class DatabaseUtils {
                     "(type,sender,receiver,data,time) values(?,?,?,?,?" +
 //                    "'" + messageType + "'," + "'" + sender + "'," +  "'" + receiver + "'," + "'" + data + "," + "'" + time + "'" +
                     "); "; // 增
-            System.out.println(sql);
             // update Student set age = 20,score = 100 where id = '10002' // 改
             // delete from Student where id = '10001' // 删
 //            while (rs.next()){  //循环一次，游标移动一行 // 查
@@ -204,7 +199,7 @@ public class DatabaseUtils {
             preparedStatement.setString(1,messageType);
             preparedStatement.setString(2,sender);
             preparedStatement.setString(3,receiver);
-            preparedStatement.setString(4,data);
+            preparedStatement.setBytes(4,data);
             preparedStatement.setString(5,time);
             System.out.println(preparedStatement);
 
@@ -220,3 +215,4 @@ public class DatabaseUtils {
         }
     }
 }
+

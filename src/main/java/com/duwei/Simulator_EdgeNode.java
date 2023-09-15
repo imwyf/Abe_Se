@@ -82,6 +82,7 @@ public class Simulator_EdgeNode {
             objectOutputStream.flush();
             TransportablePublicParams transportablePublicParams = (TransportablePublicParams) objectInputStream.readObject();
             System.out.println("接收到TA传来的公共参数：" + transportablePublicParams);
+            databaseUtils.InsertSQL(transportablePublicParams,"EdgeNode");
             edgeNode.buildPublicParams(transportablePublicParams);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -99,6 +100,8 @@ public class Simulator_EdgeNode {
             TransportableFinalCiphertext transportableFinalCiphertext1 = (TransportableFinalCiphertext) objectInputStream.readObject();
             System.out.println("接收到转化密钥：" + transportableConversionKey);
             System.out.println("接收到密文：" + transportableFinalCiphertext1);
+            databaseUtils.InsertSQL(transportableConversionKey,"EdgeNode");
+            databaseUtils.InsertSQL(transportableFinalCiphertext1,"EdgeNode");
 
         //首先重构密文和转化密钥
             ConversionKey conversionKey = ConversionKey.rebuild(transportableConversionKey, edgeNode.getPublicParams());

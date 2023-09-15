@@ -33,6 +33,7 @@ public class Simulator_CloudServer extends Thread{
     private final static CloudServer cloudServer = new CloudServer();
     private final Socket TA_socket;
     private static DatabaseUtils databaseUtils;
+    boolean hasPP;
 
     public Simulator_CloudServer(int listenPort) throws IOException {
         serverSocket = new ServerSocket(listenPort); // 监听来自数据拥有者的连接
@@ -98,7 +99,10 @@ public class Simulator_CloudServer extends Thread{
             objectOutputStream.writeInt(1);
             objectOutputStream.flush();
             TransportablePublicParams transportablePublicParams = (TransportablePublicParams) objectInputStream.readObject();
+            hasPP = true;
             System.out.println("接收到TA传来的公共参数：" + transportablePublicParams);
+            databaseUtils.InsertSQL(transportablePublicParams,"CloudServer");
+
             cloudServer.buildPublicParams(transportablePublicParams);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -111,6 +115,7 @@ public class Simulator_CloudServer extends Thread{
         ){
             TransportableSearchTrapdoor transportableSearchTrapdoor = (TransportableSearchTrapdoor) objectInputStream.readObject();
             System.out.println("接收到搜索陷门：" + transportableSearchTrapdoor);
+            databaseUtils.InsertSQL(transportableSearchTrapdoor,"CloudServer");
             SearchTrapdoor searchTrapdoor = SearchTrapdoor.rebuild(transportableSearchTrapdoor, cloudServer.getPublicParams());
             //7.云服务器遍历自己所存储的索引密文，看是否能够搜索到
             TransportableFinalCiphertext transportableFinalCiphertext1 = cloudServer.checkSearchTrapdoor(searchTrapdoor);
@@ -133,7 +138,9 @@ public class Simulator_CloudServer extends Thread{
                 TransportableIndexCiphertext transportableIndexCiphertext = (TransportableIndexCiphertext) objectInputStream.readObject();
                 TransportableFinalCiphertext transportableFinalCiphertext = (TransportableFinalCiphertext) objectInputStream.readObject();
                 System.out.println("接收到索引密文：" + transportableIndexCiphertext);
+                databaseUtils.InsertSQL(transportableIndexCiphertext,"CloudServer");
                 System.out.println("接收到密文：" + transportableFinalCiphertext);
+                databaseUtils.InsertSQL(transportableFinalCiphertext,"CloudServer");
 
                 //5.存储数据拥有者发来的索引和密文
                 cloudServer.store(transportableIndexCiphertext, transportableFinalCiphertext);

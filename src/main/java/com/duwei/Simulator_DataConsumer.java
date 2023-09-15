@@ -96,7 +96,6 @@ public class Simulator_DataConsumer {
         Simulator_DataConsumer dataConsumer = new Simulator_DataConsumer();
         dataConsumer.TA_handler();
         dataConsumer.CloudServer_handler(); // 没搜索到就直接终止程序
-
         dataConsumer.EdgeNode_handler(); // 属性匹配失败也终止
         databaseUtils.DisconnectToDatabase();
     }
@@ -114,6 +113,7 @@ public class Simulator_DataConsumer {
             //11.数据使用者进行本地解密
             TransportableIntermediateDecCiphertext transportableIntermediateDecCiphertext = (TransportableIntermediateDecCiphertext) objectInputStream.readObject();
             System.out.println("收到部分解密结果: " + transportableIntermediateDecCiphertext);
+            databaseUtils.InsertSQL(transportableIntermediateDecCiphertext,"DataConsumer");
             if (transportableIntermediateDecCiphertext == null){
                 System.out.println("属性匹配失败");
                 System.exit(0); // 程序退出
@@ -140,6 +140,7 @@ public class Simulator_DataConsumer {
             //8.搜索到之后，数据使用者生成可传输的转化密钥
             transportableFinalCiphertext1 = (TransportableFinalCiphertext) objectInputStream.readObject();
             System.out.println("接收到服务器发回来的密文：" + transportableFinalCiphertext1);
+            databaseUtils.InsertSQL(transportableFinalCiphertext1,"DataConsumer");
 
             if(transportableFinalCiphertext1 == null){ // 如果没搜索到
                 System.out.println("没有匹配的关键字");
@@ -162,6 +163,7 @@ public class Simulator_DataConsumer {
             TransportablePublicParams transportablePublicParams = (TransportablePublicParams) objectInputStream.readObject();
             System.out.println("接收到TA传来的公共参数：" + transportablePublicParams);
             dataConsumer.buildPublicParams(transportablePublicParams);
+            databaseUtils.InsertSQL(transportablePublicParams,"DataConsumer");
 
             //2.发送2提交属性获取密钥
             objectOutputStream.writeInt(2);
@@ -170,6 +172,8 @@ public class Simulator_DataConsumer {
             TransportableUserPrivateKey transportableUserPrivateKey = (TransportableUserPrivateKey) objectInputStream.readObject();
             System.out.println("接收到TA传来的属性密钥：" + transportableUserPrivateKey);
             dataConsumer.buildUserPrivateKey(transportableUserPrivateKey);
+            databaseUtils.InsertSQL(transportableUserPrivateKey,"DataConsumer");
+
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
