@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5dfc1b61-3ee2-424d-a92b-728728f6b736" name="Changes" comment="data字段改成存储blob">
+    <list default="true" id="5dfc1b61-3ee2-424d-a92b-728728f6b736" name="Changes" comment="remove some unused files">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/duwei/MySQLTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/duwei/MySQLTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/duwei/MySQLTest.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,7 +107,7 @@
       <recent name="com.duwei" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Simulator_DataConsumer">
+  <component name="RunManager" selected="Application.Simulator_EdgeNode">
     <configuration name="Simulator_CloudServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.duwei.Simulator_CloudServer" />
       <module name="Abe_Se" />
@@ -175,11 +175,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Simulator_EdgeNode" />
+        <item itemvalue="Application.Simulator_TA" />
         <item itemvalue="Application.Simulator_DataConsumer" />
         <item itemvalue="Application.Simulator_DataOwner" />
-        <item itemvalue="Application.Simulator_EdgeNode" />
         <item itemvalue="Application.Simulator_CloudServer" />
-        <item itemvalue="Application.Simulator_TA" />
       </list>
     </recent_temporary>
   </component>
@@ -280,7 +280,15 @@
       <option name="project" value="LOCAL" />
       <updated>1694749378600</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="remove some unused files">
+      <option name="closed" value="true" />
+      <created>1695000238788</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1695000238788</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -309,7 +317,8 @@
     <MESSAGE value="序列化模块ok，数据报设置模块ok，插入数据库的模块unok" />
     <MESSAGE value="插入数据库的模块ok" />
     <MESSAGE value="data字段改成存储blob" />
-    <option name="LAST_COMMIT_MESSAGE" value="data字段改成存储blob" />
+    <MESSAGE value="remove some unused files" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove some unused files" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
