@@ -1,7 +1,10 @@
 package com.duwei.util;
 
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import java.io.*;
+import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -119,9 +122,10 @@ public class DatabaseUtils {
     public void InsertSQL(Object obj, String receiver) {
         try
         {
+//            ConvertBytesToString(obj);
             String messageType;
             String sender = null;
-            byte[] data;
+//            byte[] data;
             messageType = obj.getClass().getSimpleName(); // 读取该对象的类型名称
             _messageType = _messageTypes.valueOf(messageType); // 根据名称获得对应的type
             switch (_messageType) // 根据type倒推sender
@@ -159,18 +163,19 @@ public class DatabaseUtils {
                             break;
                     }
             }
-            data = Serialize(obj);  // 把obj序列化
+//            data = Serialize(obj);  // 把obj序列化
 
             //////////////////////////////////////////////////////////////////////
             /// Debug
             //////////////////////////////////////////////////////////////////////
-            System.out.println("messageType: " + messageType);
-            System.out.println("sender: " + sender);
-            System.out.println("receiver: " + receiver);
-            System.out.println("data: ");
-            System.out.println("序列化后：" + Arrays.toString(data));
-            System.out.println("序列化长度：" + data.length);
-            System.out.println("反序列化后：" + DeSerialize(data));
+//            System.out.println("messageType: " + messageType);
+//            System.out.println("sender: " + sender);
+//            System.out.println("receiver: " + receiver);
+//            System.out.println("data: ");
+//            System.out.println("打印后的字符串：" + (obj.toString()));
+//            System.out.println("序列化后：" + Arrays.toString(data));
+//            System.out.println("序列化长度：" + data.length);
+//            System.out.println("反序列化后：" + DeSerialize(data));
 //            System.exit(1);
 
             // 定义sql语句
@@ -199,7 +204,7 @@ public class DatabaseUtils {
             preparedStatement.setString(1,messageType);
             preparedStatement.setString(2,sender);
             preparedStatement.setString(3,receiver);
-            preparedStatement.setBytes(4,data);
+            preparedStatement.setString(4,obj.toString());
             preparedStatement.setString(5,time);
             System.out.println(preparedStatement);
 
@@ -211,6 +216,28 @@ public class DatabaseUtils {
             System.out.println(count);
         }catch (Exception e)
         {
+            e.printStackTrace();
+        }
+    }
+    public void ConvertBytesToString(Object o)
+    {
+        try {
+            Field[] fields = o.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                //设置允许通过反射访问私有变量
+                field.setAccessible(true);
+                //递归调用，遍历子对象
+                ConvertBytesToString(field.get(o));
+                String clsName = field.get(o).getClass().getSimpleName();
+                if (clsName.equals("byte[]")) {
+                    Byte.toString((Byte) field.get(o));
+                }
+
+                //获取字段属性名称
+                String name = field.getName();
+                //其他自定义操作
+            }
+        }catch (Exception e){
             e.printStackTrace();
         }
     }
