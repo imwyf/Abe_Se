@@ -4,9 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5dfc1b61-3ee2-424d-a92b-728728f6b736" name="Changes" comment="remove some unused files">
+    <list default="true" id="5dfc1b61-3ee2-424d-a92b-728728f6b736" name="Changes" comment="fix some bug">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/duwei/MySQLTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/duwei/text/DataPacketEntry.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/duwei/util/DatabaseUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/duwei/util/DatabaseUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/duwei/util/DatabaseUtils$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/duwei/util/DatabaseUtils$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/duwei/util/DatabaseUtils$_messageTypes.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/duwei/util/DatabaseUtils$_messageTypes.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/duwei/util/DatabaseUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/duwei/util/DatabaseUtils.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
